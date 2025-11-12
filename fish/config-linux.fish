@@ -5,6 +5,11 @@ if type -q exa
 end
 
 function fish_greeting
-    echo Hello friend!
-    echo The time is (set_color yellow)(date +%T)(set_color normal) and this machine is called $hostname
+    set -l autoload_script "./scripts/autoload.sh"
+    if test -f $autoload_script; and test -x $autoload_script
+        source $autoload_script
+    else
+        echo Hello friend!
+        echo The time is (set_color yellow)(date +%T)(set_color normal) and this machine is called $hostname
+    end
 end

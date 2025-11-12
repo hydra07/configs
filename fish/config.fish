@@ -26,6 +26,12 @@ if status is-interactive
             source (dirname (status --current-filename))/config-windows.fish
     end
 
+    # KEYBINDING
+    test -f (dirname (status --current-filename))/keybinding.fish; and source (dirname (status --current-filename))/keybinding.fish
+
+    # THEMES
+    test -f (dirname (status --current-filename))/themes/catppuccin-fzf-mocha.fish; and source (dirname (status --current-filename))/themes/catppuccin-fzf-mocha.fish
+
     # ACTIVATE
     mise activate fish | source
     starship init fish | source
