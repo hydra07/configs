@@ -93,59 +93,66 @@ return {
 		end,
 	},
 	{
-    "akinsho/toggleterm.nvim",
-    version = "*",
-	cmd = { "ToggleTerm", "TermSelect", "ToggleTermToggleAll" },
-	keys = {
-    { [[<C-\>]], "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal" },
-    { "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "Terminal Horizontal" },
-  },
-    config = function()
-      require("toggleterm").setup({
-        size = function(term)
-          if term.direction == "horizontal" then
-            return 15
-          elseif term.direction == "vertical" then
-            return vim.o.columns * 0.4
-          end
-        end,
-        open_mapping = [[<C-\>]], -- Phím tắt chung để đóng/mở cái gần nhất
-        hide_numbers = true,
-        shade_terminals = false,
-        start_in_insert = true,
-        insert_mappings = true,
-        persist_size = true,
-        direction = "horizontal", -- Mặc định nhét xuống dưới
-        close_on_exit = true,
-        shell = vim.o.shell,
-        float_opts = {
-          border = "single",
-          winblend = 0,
-        },
-      })
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		cmd = { "ToggleTerm", "TermSelect", "ToggleTermToggleAll" },
 
-      -- Hàm để mở Terminal với ID cụ thể
-      -- Ví dụ: 1<C-\> mở terminal 1, 2<C-\> mở terminal 2
-      function _G.set_terminal_keymaps()
-        local opts = {buffer = 0}
-        vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-        vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
-        vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-        vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-        vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-        vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-      end
-	  vim.api.nvim_create_autocmd("TermOpen", {
-      pattern = "term://*",
-      callback = function()
-        _G.set_terminal_keymaps()
-      end,
-    })
-      vim.keymap.set("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>", {desc = "Terminal Horizontal"})
-      vim.keymap.set("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", {desc = "Terminal Float"})
-      vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>", {desc = "Terminal Vertical"})
-    end,
-  },
+		keys = {
+			{ [[<C-\>]], "<cmd>ToggleTerm<cr>", desc = "Toggle Terminal" },
+			{ "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>", desc = "Terminal Horizontal" },
+		},
+		config = function()
+			require("toggleterm").setup({
+				size = function(term)
+					if term.direction == "horizontal" then
+						return 15
+					elseif term.direction == "vertical" then
+						return vim.o.columns * 0.4
+					end
+				end,
+				open_mapping = [[<C-\>]], -- Phím tắt chung để đóng/mở cái gần nhất
+				hide_numbers = true,
+				shade_terminals = false,
+				start_in_insert = true,
+				insert_mappings = true,
+				persist_size = true,
+				direction = "horizontal", -- Mặc định nhét xuống dưới
+				close_on_exit = true,
+				shell = vim.o.shell,
+				float_opts = {
+					border = "single",
+					winblend = 0,
+				},
+			})
+
+			-- Hàm để mở Terminal với ID cụ thể
+			-- Ví dụ: 1<C-\> mở terminal 1, 2<C-\> mở terminal 2
+			function _G.set_terminal_keymaps()
+				local opts = { buffer = 0 }
+				vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+				vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+				vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+				vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+				vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+				vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+			end
+
+			vim.api.nvim_create_autocmd("TermOpen", {
+				pattern = "term://*",
+				callback = function()
+					_G.set_terminal_keymaps()
+				end,
+			})
+			vim.keymap.set(
+				"n",
+				"<leader>th",
+				"<cmd>ToggleTerm direction=horizontal<cr>",
+				{ desc = "Terminal Horizontal" }
+			)
+			vim.keymap.set("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "Terminal Float" })
+			vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "Terminal Vertical" })
+		end,
+	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		lazy = false,
@@ -172,5 +179,14 @@ return {
 				mappings = {},
 			},
 		},
+	},
+	{
+		"akinsho/bufferline.nvim",
+		optional = true,
+		opts = function(_, opts)
+			if (vim.g.colors_name or ""):find("catppuccin") then
+				opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
+			end
+		end,
 	},
 }

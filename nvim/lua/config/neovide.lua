@@ -1,6 +1,6 @@
 local global = vim.g
 vim.o.guifont = "Maple Mono NF:h13"
-global.neovide_transparency = 0.9
+global.neovide_opacity = 0.9
 local alpha = function()
 	return string.format("%x", math.floor(255 * (global.neovide_transparency or 0.9)))
 end

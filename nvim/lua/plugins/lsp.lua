@@ -8,6 +8,22 @@ return {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			{
+				"WhoIsSethDaniel/mason-tool-installer.nvim",
+				dependencies = { "williamboman/mason.nvim" },
+				event = "VeryLazy",
+				opts = {
+					ensure_installed = {
+						"stylua",
+						"prettierd",
+						"eslint_d",
+						"black",
+						"prettier",
+					},
+				},
+			},
+		},
 		opts = {
 			ensure_installed = {
 				"vtsls",
@@ -16,7 +32,9 @@ return {
 				"gopls",
 				"lua_ls",
 				"tailwindcss",
+				"eslint",
 			},
+			automatic_installation = true,
 		},
 	},
 	{
@@ -24,12 +42,16 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "saghen/blink.cmp" },
 		config = function()
-			local servers = { "vtsls", "pyright", "rust_analyzer", "gopls", "lua_ls", "tailwindcss" }
+			local servers = { "eslint", "vtsls", "pyright", "rust_analyzer", "gopls", "lua_ls", "tailwindcss" }
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			for _, server in ipairs(servers) do
 				local config = { capabilities = capabilities }
 				if server == "lua_ls" then
 					config.settings = { Lua = { diagnostics = { globals = { "vim" } } } }
+				elseif server == "eslint" then
+					config.settings = {
+						workingDirectories = { mode = "auto" },
+					}
 				-- TYPESCRIPT
 				elseif server == "vtsls" then
 					config.settings = {
@@ -97,4 +119,3 @@ return {
 		end,
 	},
 }
-
