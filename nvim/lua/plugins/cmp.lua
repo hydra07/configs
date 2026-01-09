@@ -3,11 +3,14 @@ return {
 		"saghen/blink.cmp",
 		version = "*",
 		event = "InsertEnter",
-		dependencies = { "rafamadriz/friendly-snippets" },
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+			"xzbdmw/colorful-menu.nvim",
+			"fang2hou/blink-copilot",
+		},
 		opts = {
 			keymap = {
-				preset = "none", --
-				-- 1. ACCEPT
+				preset = "none",
 				["<Tab>"] = {
 					function(cmp)
 						if cmp.is_menu_visible() or cmp.is_ghost_text_visible() then
@@ -17,20 +20,20 @@ return {
 					"snippet_forward",
 					"fallback",
 				},
-				-- 2. SELECT
 				["<C-j>"] = { "select_next", "fallback" },
 				["<C-k>"] = { "select_prev", "fallback" },
-				-- 3. ENTER: none
 				["<CR>"] = { "fallback" },
 				["<S-Tab>"] = { "snippet_backward", "fallback" },
-				--  show/hide docs
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 				["<C-e>"] = { "hide", "fallback" },
-				-- scroll docs
 				["<C-b>"] = { "scroll_documentation_up", "fallback" },
 				["<C-f>"] = { "scroll_documentation_down", "fallback" },
 			},
 			completion = {
+				trigger = {
+					-- prefetch_on_insert_enter = true,
+					show_on_x_blocked_trigger_characters = { "'", '"', "(" },
+				},
 				list = {
 					selection = {
 						preselect = true,
@@ -39,9 +42,20 @@ return {
 				},
 				ghost_text = { enabled = true },
 				menu = {
+					max_items = 100,
 					border = "single",
 					draw = {
-						columns = { { "label", "label_description", gap = 1 }, { "kind_icon" } },
+						columns = { { "kind_icon" }, { "label", gap = 1 } },
+						components = {
+							label = {
+								text = function(ctx)
+									return require("colorful-menu").blink_components_text(ctx)
+								end,
+								highlight = function(ctx)
+									return require("colorful-menu").blink_components_highlight(ctx)
+								end,
+							},
+						},
 					},
 				},
 				documentation = {
@@ -51,12 +65,18 @@ return {
 				},
 			},
 			fuzzy = {
-				-- frecency = { enabled = true },
-				-- proximity_bonus = { enabled = true },
 				implementation = "prefer_rust_with_warning",
 			},
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer" },
+				default = { "copilot", "lsp", "path", "snippets", "buffer" },
+				providers = {
+					copilot = {
+						name = "copilot",
+						module = "blink-copilot",
+						score_offset = 100,
+						async = true,
+					},
+				},
 			},
 			cmdline = {
 				enabled = true,
@@ -85,6 +105,35 @@ return {
 					end
 					return {}
 				end,
+			},
+		},
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		keys = {
+			{
+				"<leader>ct",
+				function()
+					local client = require("copilot.client")
+					if client.is_disabled() then
+						vim.cmd("Copilot enable")
+						vim.notify("Copilot Enabled", vim.log.levels.INFO, { title = "Copilot" })
+					else
+						vim.cmd("Copilot disable")
+						vim.notify("Copilot Disabled", vim.log.levels.WARN, { title = "Copilot" })
+					end
+				end,
+				desc = "Copilot: Toggle On/Off",
+			},
+		},
+		opts = {
+			suggestion = { enabled = false },
+			panel = { enabled = false },
+			filetypes = {
+				markdown = true,
+				help = true,
 			},
 		},
 	},

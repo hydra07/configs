@@ -56,6 +56,7 @@ return {
 				elseif server == "vtsls" then
 					config.settings = {
 						typescript = {
+							autoImports = true,
 							inlayHints = {
 								variableTypes = { enabled = true },
 								parameterNames = { enabled = "literals" },

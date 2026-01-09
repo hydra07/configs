@@ -2,7 +2,6 @@ local powershell = "powershell"
 if vim.fn.executable("pwsh") == 1 then
 	powershell = "pwsh"
 end
-
 local options = {
 	shell = powershell,
 	shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",

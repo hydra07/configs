@@ -17,6 +17,7 @@ return {
 				{ "<leader>b", group = "Buffer" }, -- Nhóm quản lý Tab/Buffer
 				{ "<leader>v", group = "Neovide" }, -- Nhóm cho Neovide GUI
 				{ "<leader>t", group = "Terminal" },
+				{ "<leader>c", group = "Code/Copilot" },
 				{ ";", group = "Telescope/QuickActions" },
 				{ ";h", desc = "Toggle Inlay Hints" },
 			},
@@ -44,8 +45,7 @@ return {
 				"<cmd>enew<cr>",
 				desc = "New File",
 			},
-
-			-- 2. WINDOW & SPLIT (Rất hay dùng)
+			-- 2. WINDOW & SPLIT
 			{
 				"<leader>wv",
 				"<cmd>vsplit<cr>",
@@ -66,8 +66,7 @@ return {
 				"<cmd>only<cr>",
 				desc = "Close Others",
 			},
-
-			-- 3. BUFFER MANAGEMENT (Chuyển tab nhanh)
+			-- 3. BUFFER MANAGEMENT
 			{
 				"<leader>bn",
 				"<cmd>bnext<cr>",
@@ -83,8 +82,7 @@ return {
 				"<cmd>bdelete<cr>",
 				desc = "Delete Buffer",
 			},
-
-			-- 4. NEOVIDE GUI OPTIMIZATION (Tăng giảm độ trong suốt nhanh)
+			-- 4. NEOVIDE GUI OPTIMIZATION
 			{
 				"<leader>v+",
 				function()
@@ -99,8 +97,43 @@ return {
 				end,
 				desc = "Decrease Transparency",
 			},
-
-			-- 5. LSP & CODE (Giữ nguyên và bổ sung)
+			{
+				"<C-=>", -- Ctrl + = để tăng font
+				function()
+					local current_font = vim.o.guifont
+					local name, size = current_font:match("([^:]+):h(%d+)")
+					if name and size then
+						vim.o.guifont = name .. ":h" .. (tonumber(size) + 1)
+					end
+				end,
+				desc = "Increase Font Size",
+			},
+			{
+				"<C-->", -- Ctrl + - để giảm font
+				function()
+					local current_font = vim.o.guifont
+					local name, size = current_font:match("([^:]+):h(%d+)")
+					if name and size then
+						local new_size = tonumber(size) - 1
+						if new_size > 0 then
+							vim.o.guifont = name .. ":h" .. new_size
+						end
+					end
+				end,
+				desc = "Decrease Font Size",
+			},
+			{
+				"<C-0>", -- Ctrl + 0 để reset font về mặc định (ví dụ 13)
+				function()
+					local current_font = vim.o.guifont
+					local name = current_font:match("([^:]+):h%d+")
+					if name then
+						vim.o.guifont = name .. ":h13"
+					end
+				end,
+				desc = "Reset Font Size",
+			},
+			-- 5. LSP & CODE
 			{
 				"<leader>la",
 				vim.lsp.buf.code_action,
@@ -128,15 +161,14 @@ return {
 				end,
 				desc = "Format Buffer",
 			},
+			{ "<leader>ct", "<cmd>Copilot toggle<cr>", desc = "Toggle Copilot" },
 			{ "<leader>ci", "<cmd>ConformInfo<cr>", desc = "Conform Info" },
-
-			-- 6. TERMINAL (Fix lỗi command cho bạn)
+			-- 6. TERMINAL
 			{ "<leader>t1", "<cmd>1ToggleTerm direction=horizontal<cr>", desc = "Terminal 1 (Down)" },
 			{ "<leader>t2", "<cmd>2ToggleTerm direction=vertical<cr>", desc = "Terminal 2 (Side)" },
 			{ "<leader>t3", "<cmd>3ToggleTerm direction=float<cr>", desc = "Terminal 3 (Float)" },
 			{ "<leader>ts", "<cmd>TermSelect<cr>", desc = "Select Terminal" },
 			{ "<leader>tt", "<cmd>ToggleTermToggleAll<cr>", desc = "Toggle All Terminals" },
-
 			-- 7. KHÁC
 			{
 				"<leader>?",
