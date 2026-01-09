@@ -7,7 +7,7 @@ return {
 			plugins = {
 				marks = true,
 				registers = true,
-				spelling = { emabled = true, suggestions = 20 },
+				spelling = { enabled = true, suggestions = 20 },
 			},
 			win = {
 				border = "single",
