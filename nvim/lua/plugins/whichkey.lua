@@ -3,6 +3,18 @@ return {
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		opts = {
+			preset = "helix",
+			plugins = {
+				marks = true,
+				registers = true,
+				spelling = { emabled = true, suggestions = 20 },
+			},
+			win = {
+				border = "single",
+				padding = { 1, 2 },
+				title_pos = "center",
+				wo = { winblend = 30 },
+			},
 			icons = {
 				breadcrumb = "»",
 				separator = "➜",
@@ -11,6 +23,7 @@ return {
 			spec = {
 				{ "<leader>f", group = "File/Find" },
 				{ "<leader>e", desc = "Explorer" },
+				{ "<leader>s", group = "Flash/Jump", icon = "⚡" },
 				{ "<leader>g", group = "Git" },
 				{ "<leader>l", group = "LSP" },
 				{ "<leader>w", group = "Window/Split" }, -- Nhóm Window & Split
@@ -23,6 +36,18 @@ return {
 			},
 		},
 		keys = {
+			-- Di chuyển bằng J/K trong Visual Mode (Tự động căn lề '=' )
+			{ "J", ":m '>+1<cr>gv=gv", desc = "Move Block Down", mode = "v" },
+			{ "K", ":m '<-2<cr>gv=gv", desc = "Move Block Up", mode = "v" },
+			-- Di chuyển bằng Alt + Mũi tên (Dành cho Normal Mode)
+			{ "<A-Down>", "<cmd>m .+1<cr>== ", desc = "Move Line Down" },
+			{ "<A-Up>", "<cmd>m .-2<cr>== ", desc = "Move Line Up" },
+			-- Di chuyển bằng Alt + Mũi tên (Dành cho Visual Mode)
+			{ "<A-Down>", ":m '>+1<cr>gv=gv", desc = "Move Block Down", mode = "v" },
+			{ "<A-Up>", ":m '<-2<cr>gv=gv", desc = "Move Block Up", mode = "v" },
+			-- Di chuyển bằng Alt + Mũi tên (Dành cho Insert Mode)
+			{ "<A-Down>", "<esc><cmd>m .+1<cr>==gi", desc = "Move Line Down", mode = "i" },
+			{ "<A-Up>", "<esc><cmd>m .-2<cr>==gi", desc = "Move Line Up", mode = "i" },
 			-- 1. FILE & SAVE
 			{
 				"<C-s>",

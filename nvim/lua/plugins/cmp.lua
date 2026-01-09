@@ -31,7 +31,6 @@ return {
 			},
 			completion = {
 				trigger = {
-					-- prefetch_on_insert_enter = true,
 					show_on_x_blocked_trigger_characters = { "'", '"', "(" },
 				},
 				list = {
@@ -42,7 +41,7 @@ return {
 				},
 				ghost_text = { enabled = true },
 				menu = {
-					max_items = 100,
+					-- max_items = 100,
 					border = "single",
 					draw = {
 						columns = { { "kind_icon" }, { "label", gap = 1 } },

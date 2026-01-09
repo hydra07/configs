@@ -1,6 +1,5 @@
 if status is-interactive
     set fish_greeting ""
-
     set -gx TERM xterm-256color
 
     # THEME
@@ -40,6 +39,5 @@ end
 # pnpm
 set -gx PNPM_HOME "$HOME/.local/share/pnpm"
 if not contains $PNPM_HOME $PATH
-    set -gx PATH $PNPM_HOME $PATH
+  set -gx PATH $PNPM_HOME $PATH
 end
-# pnpm end

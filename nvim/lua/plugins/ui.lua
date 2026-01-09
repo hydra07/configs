@@ -13,18 +13,30 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		lazy = false,
+		priority = 1000,
 		config = function()
 			require("catppuccin").setup({
-				flavour = "mocha",
+				flavour = "macchiato",
 				transparent_background = true,
 				term_colors = true,
 				integrations = {
 					blink_cmp = true,
+					mini = { enabled = true },
+					mason = true,
+					telescope = {
+						enabled = true,
+						styles = { "nvchad" },
+					},
+					lualine = true,
+					neotree = true,
+					dashboard = true,
 					native_lsp = {
 						enabled = true,
 						underlines = {
 							errors = { "undercurl" },
 							hints = { "undercurl" },
+							warnings = { "undercurl" },
+							information = { "undercurl" },
 						},
 					},
 					treesitter = true,

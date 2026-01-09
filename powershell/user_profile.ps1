@@ -32,36 +32,33 @@ Set-Alias g git
 Set-Alias ls eza
 Set-Alias file fpilot.exe
 Set-Alias python3 python
-# Set-Alias pip 'python -m pip'
-# Set-Alias pip 'C:\Users\hydra7\scoop\apps\pyenv\current\pyenv-win\versions\3.13.6\python.exe -m pip --version'
 # Set-Alias grep findstr
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
 Set-Alias less 'C:\Program Files\Git\usr\bin\less.exe'
 
-# fix lỗi pip trong pyenv
 if (Get-Command python -ErrorAction SilentlyContinue) {
-    try {
-        $null = python -m pip --version 2>$null
-        if ($LASTEXITCODE -eq 0) {
-            function pip {
-                python -m pip @args
-            }
-        }
-    } catch {
-        Write-Verbose "pip not available in current python"
+  try {
+    $null = python -m pip --version 2>$null
+    if ($LASTEXITCODE -eq 0) {
+      function pip {
+        python -m pip @args
+      }
     }
+  } catch {
+    Write-Verbose "pip not available in current python"
+  }
 }
 
 function ll {
-    param (
-        [switch]$a
-    )
+  param (
+    [switch]$a
+  )
 
-    if ($a) {
-        eza -l -a
-    } else {
-        eza -l
-    }
+  if ($a) {
+    eza -l -a
+  } else {
+    eza -l
+  }
 }
 
 
@@ -70,5 +67,7 @@ function which ($command) {
   Get-Command -Name $command -ErrorAction SilentlyContinue |
     Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
-if (Get-Command mise -ErrorAction SilentlyContinue) { mise activate pwsh | Out-String | Invoke-Expression }
+if (Get-Command mise -ErrorAction SilentlyContinue) {
+  mise activate pwsh | Out-String | Invoke-Expression 
+}
 # Invoke-Expression (&starship init powershell)

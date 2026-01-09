@@ -193,6 +193,7 @@ return {
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		dependencies = {
+			"catppuccin/nvim",
 			"nvim-tree/nvim-web-devicons",
 			"AndreM222/copilot-lualine", -- Thêm dependency này
 		},
@@ -217,7 +218,6 @@ return {
 				local formatter_name = get_formatter()
 				local client_names = {}
 				for _, client in ipairs(clients) do
-					-- Loại bỏ cả copilot khỏi danh sách LSP vì đã có icon riêng
 					if client.name ~= formatter_name and client.name ~= "copilot" then
 						table.insert(client_names, client.name)
 					end
@@ -237,7 +237,7 @@ return {
 
 			return {
 				options = {
-					theme = "catppuccin",
+					theme = catppuccin,
 					component_separators = { left = "│", right = "│" },
 					section_separators = { left = "", right = "" },
 					globalstatus = true,
@@ -318,6 +318,7 @@ return {
 			modes = {
 				char = {
 					enabled = true,
+					keys = { "f", "F", "t", "T" },
 					jump_labels = true,
 				},
 			},

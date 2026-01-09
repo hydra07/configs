@@ -11,7 +11,6 @@ return {
 		dependencies = {
 			{
 				"WhoIsSethDaniel/mason-tool-installer.nvim",
-				dependencies = { "williamboman/mason.nvim" },
 				event = "VeryLazy",
 				opts = {
 					ensure_installed = {
@@ -20,12 +19,17 @@ return {
 						"eslint_d",
 						"black",
 						"prettier",
+						"shellcheck",
+						"shfmt",
 					},
 				},
 			},
 		},
 		opts = {
 			ensure_installed = {
+				"bashls",
+				"fish_lsp",
+				"powershell_es",
 				"vtsls",
 				"pyright",
 				"rust_analyzer",
@@ -42,12 +46,34 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "saghen/blink.cmp" },
 		config = function()
-			local servers = { "eslint", "vtsls", "pyright", "rust_analyzer", "gopls", "lua_ls", "tailwindcss" }
+			local servers = {
+				"eslint",
+				"vtsls",
+				"pyright",
+				"rust_analyzer",
+				"gopls",
+				"lua_ls",
+				"tailwindcss",
+				"bashls",
+				"fish_lsp",
+				"powershell_es",
+			}
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			for _, server in ipairs(servers) do
 				local config = { capabilities = capabilities }
 				if server == "lua_ls" then
 					config.settings = { Lua = { diagnostics = { globals = { "vim" } } } }
+				-- PS
+				elseif server == "powershell_es" then
+					config.settings = {
+						powershell = {
+							scriptAnalysis = { enable = true, settingsPath = "" },
+							codeFormatting = { Preset = "OTBS" }, -- Hoặc "Microsoft" tùy style bạn thích
+						},
+					}
+					-- Neovide trên Windows đôi khi cần chỉ định rõ đường dẫn bundle nếu Mason không tự nhận
+					config.bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services"
+				-- ESLINT
 				elseif server == "eslint" then
 					config.settings = {
 						workingDirectories = { mode = "auto" },
