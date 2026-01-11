@@ -19,6 +19,13 @@ return {
 				flavour = "macchiato",
 				transparent_background = true,
 				term_colors = true,
+				custom_highlights = function(colors)
+					return {
+						LineNr = { fg = colors.overlay1, bold = true },
+						-- CursorLineNr = { fg = colors.lavender, bold = true },
+						-- VertSplit = { fg = colors.surface1 },
+					}
+				end,
 				integrations = {
 					blink_cmp = true,
 					mini = { enabled = true },

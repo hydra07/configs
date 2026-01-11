@@ -1,73 +1,26 @@
-# set PowerShell to UTF-8
-[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-
-Import-Module -Name Microsoft.WinGet.CommandNotFound
-
-Import-Module posh-git
-Import-Module -Name Terminal-Icons
-Invoke-Expression (&starship init powershell --print-full-init | Out-String)
-# PSReadLine
-# Set-PSReadLineOption -EditMode Emacs 
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadLineOption -BellStyle Visual # Visual, None, Audible
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-Set-PSReadLineOption -PredictionViewStyle ListView # InlineView, ListView
-# Set-PSReadLineOption -HistoryNoDuplicates TRUE # không lưu lịch sử trùng nhau
+. "$PSScriptRoot\utils.ps1"
+. "$PSScriptRoot\env.ps1"
+. "$PSScriptRoot\alias.ps1"
+# Import-Module
+Invoke-ExternalInit "starship" { starship init powershell --print-full-init }
+Invoke-ExternalInit "mise"     { mise activate pwsh --quiet }
+Import-MyModules -Modules @("PSFzf", "Microsoft.WinGet.CommandNotFound")
+# PSReadLine Config
+$psrSettings = @{
+  EditMode            = "Windows"
+  PredictionSource    = "HistoryAndPlugin"
+  PredictionViewStyle = "ListView"
+  HistoryNoDuplicates = $true
+  CompletionQueryItems = 10
+}
+Set-PSReadLineOption @psrSettings
+# KeyHandlers
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Chord 'RightArrow' -Function AcceptNextSuggestionWord
 Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
-
-# Set-PSReadLineOption -PredictionSource History
-
-# Fzf
-Import-Module PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
 
-# Env
-$env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
-$ENV:STARSHIP_CONFIG = "$HOME\.config\starship\starship.toml"
-$ENV:STARSHIP_CACHE = "$HOME\.config\starship\cache"
-
-# Alias
-Set-Alias -Name vim -Value nvim
-Set-Alias g git
-Set-Alias ls eza
-Set-Alias file fpilot.exe
-Set-Alias python3 python
-# Set-Alias grep findstr
-Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
-Set-Alias less 'C:\Program Files\Git\usr\bin\less.exe'
-
-if (Get-Command python -ErrorAction SilentlyContinue) {
-  try {
-    $null = python -m pip --version 2>$null
-    if ($LASTEXITCODE -eq 0) {
-      function pip {
-        python -m pip @args
-      }
-    }
-  } catch {
-    Write-Verbose "pip not available in current python"
-  }
-}
-
-function ll {
-  param (
-    [switch]$a
-  )
-
-  if ($a) {
-    eza -l -a
-  } else {
-    eza -l
-  }
-}
-
-
-# Utilities
-function which ($command) {
-  Get-Command -Name $command -ErrorAction SilentlyContinue |
-    Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
-}
-if (Get-Command mise -ErrorAction SilentlyContinue) {
-  mise activate pwsh | Out-String | Invoke-Expression 
-}
-# Invoke-Expression (&starship init powershell)
+# Encoding
+[Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.UTF8Encoding]::new()

@@ -34,7 +34,7 @@ return {
 						-- for node
 						"--glob=!**/node_modules/*",
 						"--glob=!**/.next/*",
-						"--glob=!**/package-lock.json", -- Thường không ai grep trong file lock
+						"--glob=!**/package-lock.json",
 						"--glob=!**/yarn.lock",
 						"--glob=!**/pnpm.lock",
 						"--glob=!**/bun.lock",
@@ -71,7 +71,7 @@ return {
 				},
 				extensions = {
 					file_browser = {
-						-- theme = "ivy", -- Ivy là theme dạng thanh ngang phía dưới (rất Pro)
+						-- theme = "ivy",
 						hijack_netrw = true,
 						hidden = true,
 						mappings = {
@@ -86,8 +86,7 @@ return {
 					},
 				},
 			})
-
-			-- Kích hoạt extensions
+			-- Active extensions
 			telescope.load_extension("file_browser")
 			telescope.load_extension("fzf")
 		end,
@@ -110,7 +109,7 @@ return {
 						return vim.o.columns * 0.4
 					end
 				end,
-				open_mapping = [[<C-\>]], -- Phím tắt chung để đóng/mở cái gần nhất
+				open_mapping = [[<C-\>]],
 				hide_numbers = true,
 				shade_terminals = false,
 				start_in_insert = true,

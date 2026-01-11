@@ -8,7 +8,8 @@ opt.title = true
 opt.tabstop = 2
 opt.showtabline = 2
 opt.relativenumber = true
-opt.numberwidth = 2
+opt.numberwidth = 6
+opt.colorcolumn = "1"
 opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.smartindent = true
@@ -18,9 +19,9 @@ opt.autoindent = true
 opt.cindent = true
 opt.termguicolors = true
 if sysname == "Windows_NT" then
-	require("config.window")
+  require("config.window")
 elseif sysname == "Darwin" then
-	require("config.macos")
+  require("config.macos")
 else
-	require("config.linux")
+  require("config.linux")
 end
